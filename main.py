@@ -83,9 +83,9 @@ password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=37)
+website_entry = Entry(width=21)
 website_entry.focus()
-website_entry.grid(row=1, column=1, columnspan=2, sticky="EW")
+website_entry.grid(row=1, column=1, sticky="EW")
 email_entry = Entry(width=37)
 email_entry.insert(0, "fake@mail.com")
 email_entry.grid(row=2, column=1, columnspan=2, sticky="EW")
@@ -97,5 +97,8 @@ generate_button = Button(text="Generate Password", highlightthickness=0, command
 generate_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=35, command=save)
 add_button.grid(row=4, column=1, columnspan=2, sticky="EW")
+search_button = Button(text="Search")
+search_button.grid(row=1, column=2, columnspan=2, sticky="EW")
+
 
 window.mainloop()
