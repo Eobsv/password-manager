@@ -1,3 +1,4 @@
+import email
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
@@ -52,8 +53,8 @@ def save():
                 with open('data.json', mode='r') as data_file:
                     data = json.load(data_file)
             except (FileNotFoundError, json.JSONDecodeError):
-                with open("data.json", "w") as file:
-                    json.dump(new_data, file, indent=4)
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
             else:
                 data.update(new_data)
                 with open('data.json', mode='w') as data_file:
@@ -66,7 +67,14 @@ def save():
 # ------------------------- SEARCH BUTTON ----------------------------- #
 def find_password():
     actual_website = website_entry.get()
-
+    with open('data.json', mode='r') as data_file:
+        data = json.load(data_file)
+    # if data[actual_website]:
+    #     messagebox(f"There are credentials for {data[actual_website]} \n \"password\":"
+    #                f" {data[actual_website][password]}) \n\"email\": {data[actual_website][email]}")
+    # else:
+    #     pass
+    print(data[actual_website])
 
 
 # ---------------------------- UI SETUP ------------------------------- #
