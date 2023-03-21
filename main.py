@@ -2,11 +2,12 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
-    password_entry.delete(0,END)
+    password_entry.delete(0, END)
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
                'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
                'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -35,17 +36,32 @@ def save():
     email = email_entry.get()
     website = website_entry.get()
     password = password_entry.get()
-
+    new_data = {
+        website: {
+            "email": email,
+            "passsword": password,
+        }
+    }
     if len(website) == 0 or len(password) == 0:
         messagebox.showwarning(title="Warnign", message="You left some box empty")
     else:
         is_ok = messagebox.askokcancel(title="Website", message=f"There are the details entered: \nEmail: {email}"
                                                                 f"\nPassword: {password} \n Is it ok to save?")
         if is_ok:
-            with open("pws.txt", mode="a") as pws_data:
-                pws_data.write(f"{website} | {email} | {password}\n")
-                website_entry.delete(0, END)
-                password_entry.delete(0, END)
+            try:
+                with open('data.json', mode='r') as data_file:
+                    data = json.load(data_file)
+            except (FileNotFoundError, json.JSONDecodeError):
+                data = new_data
+            else:
+                data.update(new_data)
+
+                with open('data.json', mode='w') as data_file:
+                    json.dump(data, data_file, indent=4)
+                    website_entry.delete(0, END)
+                    password_entry.delete(0, END)
+
+        # print(data) # type is dict
 
 
 # ---------------------------- UI SETUP ------------------------------- #
