@@ -1,3 +1,4 @@
+import email
 from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
@@ -39,7 +40,7 @@ def save():
     new_data = {
         website: {
             "email": email,
-            "passsword": password,
+            "password": password,
         }
     }
     if len(website) == 0 or len(password) == 0:
@@ -52,8 +53,8 @@ def save():
                 with open('data.json', mode='r') as data_file:
                     data = json.load(data_file)
             except (FileNotFoundError, json.JSONDecodeError):
-                with open("data.json", "w") as file:
-                    json.dump(new_data, file, indent=4)
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
             else:
                 data.update(new_data)
                 with open('data.json', mode='w') as data_file:
@@ -63,11 +64,22 @@ def save():
                 password_entry.delete(0, END)
 
         # print(data) # type is dict
-# ------------------------- SEARCH BUTTON ----------------------------- #
+# ------------------------- FIND PASS ----------------------------- #
 def find_password():
-    actual_website = website_entry.get()
-
-
+    website = website_entry.get()
+    try:
+        with open('data.json', mode='r') as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showwarning(title="Error", message="No data")
+    else:
+        if website in data:
+            email = data[website]['email']
+            password = data[website]['password']
+            messagebox.showinfo(title=website, message=f'Email: {email}'
+                                                       f'\nPassword: {password}')
+        else:
+            messagebox.showinfo(title="Error", message="No such website")
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
