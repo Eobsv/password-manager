@@ -52,16 +52,21 @@ def save():
                 with open('data.json', mode='r') as data_file:
                     data = json.load(data_file)
             except (FileNotFoundError, json.JSONDecodeError):
-                data = new_data
+                with open("data.json", "w") as file:
+                    json.dump(new_data, file, indent=4)
             else:
                 data.update(new_data)
-
                 with open('data.json', mode='w') as data_file:
                     json.dump(data, data_file, indent=4)
-                    website_entry.delete(0, END)
-                    password_entry.delete(0, END)
+            finally:
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
 
         # print(data) # type is dict
+# ------------------------- SEARCH BUTTON ----------------------------- #
+def find_password():
+    actual_website = website_entry.get()
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
@@ -97,7 +102,7 @@ generate_button = Button(text="Generate Password", highlightthickness=0, command
 generate_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=35, command=save)
 add_button.grid(row=4, column=1, columnspan=2, sticky="EW")
-search_button = Button(text="Search")
+search_button = Button(text="Search", command=find_password)
 search_button.grid(row=1, column=2, columnspan=2, sticky="EW")
 
 
